@@ -1,7 +1,12 @@
 class Game:
 
-	def __init__(self):
-		self.current = 'X';
+	def __init__(self, playerOne, playerTwo):
+		self.playerOne = playerOne;
+		self.playerTwo = playerTwo;
+		self.playerOne.setGame(self);
+		self.playerTwo.setGame(self);
+
+		self.turn = self.playerOne;
 		self.board = [["" for _ in range(3)] for _ in range(3)];
 		self.combs = [
 			['00', '01', '02'],
@@ -16,7 +21,6 @@ class Game:
 
 	def reset(self):
 		self.board = [["" for _ in range(3)] for _ in range(3)];
-		self.current = 'X';
 
 	def isTie(self):
 		for x in range(3):
@@ -53,13 +57,8 @@ class Game:
 		self.reset();
 
 	def doPlay(self, x, y):
-		x = x - 1;
-		y = y - 1;
-		if self.board[x][y] != "":
-			print('board at row ' + str(x + 1) + ' and column ' + str(y + 1) + ' is not empty');
-			return;
-		self.board[x][y] = self.current;
-		self.current = 'O' if self.current == 'X' else 'X';
+		self.board[x][y] = self.turn.getPrompt().getSymbol();
+		self.turn = self.playerTwo if id(self.turn) == id(self.playerOne) else self.playerOne;
 
 	def start(self):
 
@@ -70,14 +69,7 @@ class Game:
 			command = input('(p)play, (r)restart, (e)exit: ');
 
 			if command == 'p':
-				try:
-					x = int(input('type row number (from 1 to 3): '));
-					y = int(input('type column number (from 1 to 3): '));
-					if (x < 1 or x > 3) or (y < 1 or y > 3):
-						raise Exception('invalid x or y range');
-				except:
-					print('invalid y or x range (from 1 to 3) or typed text can\'t be parsed to integer');
-				self.doPlay(x, y);
+				self.turn.doPlay();
 			elif command == 'r':
 				self.reset();
 			elif command == 'e':
@@ -109,3 +101,21 @@ class Prompt:
 
 	def getSymbol(self):
 		return self.symbol;
+
+	def getPlayer(self):
+		return self.player;
+
+	def setPlayer(self, player):
+		self.player = player;
+		return self;
+
+	def getCords(self):
+		try:
+			x = int(input('type row number (from 1 to 3): '));
+			y = int(input('type column number (from 1 to 3): '));
+			if (x < 1 or x > 3) or (y < 1 or y > 3):
+				raise Exception('invalid x or y range');
+		except:
+			print('invalid y or x range (from 1 to 3) or typed text can\'t be parsed to integer');
+			return False;
+		return [(x - 1), (y - 1)];
