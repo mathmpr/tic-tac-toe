@@ -92,5 +92,20 @@ class Game:
 				self.render();
 
 
-game = Game();
-game.start();
+class Prompt:
+	def __init__(self, _except = []):
+		while True:
+			self.symbol = (input('choose a symbol for player: ')).upper();
+			if self.symbol == '':
+				print("symbol can't be empty.");
+			elif self.symbol.isnumeric():
+				print("symbol can't be numberic.");
+			elif len(self.symbol) > 1:
+				print("symbol have to be one single letter.");
+			elif self.symbol in _except:
+				print("one player already choosen this symbol, please choose another symbol.");
+			else:
+				break;
+
+	def getSymbol(self):
+		return self.symbol;
