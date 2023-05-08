@@ -6,14 +6,20 @@ class Ia(Player):
 		super().__init__(prompt);
 		self.iBegin = False;
 		self.prevents = [
+			('11,22', '02'),
+			('11,02', '22'),
+			('11,00', '20'),
+			('11,20', '00'),
+			('00,22', '01,10,12,21'),
+			('20,02', '01,10,12,21'),
 			('00', '11'),
 			('02', '11'),
 			('20', '11'),
-			('22', '11'),
-			('00,22', '01,10,12,21'),
-			('20,02', '01,10,12,21')
+			('22', '11')
 		];
 		self.tricks = [
+			('02,20', '00,22'),
+			('00,22', '02,20'),
 			('00', '22'),
 			('22', '00'),
 			('02', '20'),
@@ -25,9 +31,7 @@ class Ia(Player):
 			('22', '20'),
 			('20', '22'),
 			('02', '00'),
-			('02', '22'),
-			('02,20', '00,22'),
-			('00,22', '02,20')
+			('02', '22')			
 		];
 
 	def reset(self):
@@ -89,6 +93,7 @@ class Ia(Player):
 					if self.isEnemySymbol(x, y):
 						checkCount = checkCount + 1;
 					if checkCount == len(_checks):
+						print(checkCount);
 						for prevent in _prevents:
 							x_prevent = int(prevent[0]);
 							y_prevent = int(prevent[1]);
