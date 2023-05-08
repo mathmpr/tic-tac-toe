@@ -5,9 +5,10 @@ class Game:
 		self.playerTwo = playerTwo;
 		self.playerOne.setGame(self);
 		self.playerTwo.setGame(self);
+		self.state = 'reseted';
 
 		self.turn = self.playerOne;
-		self.board = [["" for _ in range(3)] for _ in range(3)];
+		self.reset();
 		self.combs = [
 			['00', '01', '02'],
 			['10', '11', '12'],
@@ -19,7 +20,16 @@ class Game:
 			['20', '11', '02'],
 		];
 
+	def getState(self):
+		return self.state;
+
+	def getTurn(self):
+		return self.turn;
+
 	def reset(self):
+		self.state = 'reseted';
+		self.playerOne.reset();
+		self.playerTwo.reset();
 		self.board = [["" for _ in range(3)] for _ in range(3)];
 
 	def isTie(self):
@@ -52,12 +62,17 @@ class Game:
 		print ("", end="\n\n");
 
 	def renderEnd(self, message):
+		self.render();
 		print(message);
 		input("press any key to reset game and continue...\n");
 		self.reset();
 
 	def doPlay(self, x, y):
+		self.state = 'restart';
 		self.board[x][y] = self.turn.getPrompt().getSymbol();
+		self.changeTurn();
+
+	def changeTurn(self):
 		self.turn = self.playerTwo if id(self.turn) == id(self.playerOne) else self.playerOne;
 
 	def start(self):
@@ -71,6 +86,8 @@ class Game:
 			if command == 'p':
 				self.turn.doPlay();
 			elif command == 'r':
+				if isinstance(self.turn, Human):
+					self.changeTurn();
 				self.reset();
 			elif command == 'e':
 				break;
@@ -82,40 +99,3 @@ class Game:
 				self.renderEnd("\nThe game have a tie");
 			else:
 				self.render();
-
-
-class Prompt:
-	def __init__(self, _except = []):
-		while True:
-			self.symbol = (input('choose a symbol for player: ')).upper();
-			if self.symbol == '':
-				print("symbol can't be empty.");
-			elif self.symbol.isnumeric():
-				print("symbol can't be numberic.");
-			elif len(self.symbol) > 1:
-				print("symbol have to be one single letter.");
-			elif self.symbol in _except:
-				print("one player already choosen this symbol, please choose another symbol.");
-			else:
-				break;
-
-	def getSymbol(self):
-		return self.symbol;
-
-	def getPlayer(self):
-		return self.player;
-
-	def setPlayer(self, player):
-		self.player = player;
-		return self;
-
-	def getCords(self):
-		try:
-			x = int(input('type row number (from 1 to 3): '));
-			y = int(input('type column number (from 1 to 3): '));
-			if (x < 1 or x > 3) or (y < 1 or y > 3):
-				raise Exception('invalid x or y range');
-		except:
-			print('invalid y or x range (from 1 to 3) or typed text can\'t be parsed to integer');
-			return False;
-		return [(x - 1), (y - 1)];

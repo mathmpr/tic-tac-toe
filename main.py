@@ -1,5 +1,5 @@
 from game import Game;
-from game import Prompt;
+from prompt import Prompt;
 from ia import Ia;
 from human import Human;
 
