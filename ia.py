@@ -93,7 +93,6 @@ class Ia(Player):
 					if self.isEnemySymbol(x, y):
 						checkCount = checkCount + 1;
 					if checkCount == len(_checks):
-						print(checkCount);
 						for prevent in _prevents:
 							x_prevent = int(prevent[0]);
 							y_prevent = int(prevent[1]);
@@ -104,7 +103,7 @@ class Ia(Player):
 				y = int(_check[1]);
 				x_prevent = int(_prevent[0]);
 				y_prevent = int(_prevent[1]);
-				if self.isEnemySymbol(x, y) and not self.isSelfSymbol(x_prevent, y_prevent):
+				if self.isEnemySymbol(x, y) and not self.isSelfSymbol(x_prevent, y_prevent) and self.isEmpty(x_prevent, y_prevent):
 					return [x_prevent, y_prevent];
 		return False;
 
@@ -126,7 +125,7 @@ class Ia(Player):
 				y = int(check[1]);
 				if self.isSelfSymbol(x, y):
 					checkCount = checkCount + 1;
-				else:
+				elif self.isEmpty(x, y):
 					initialTricks.append([x, y]);
 
 			if checkCount == len(_checks):
@@ -156,8 +155,14 @@ class Ia(Player):
 					return emptyCords;
 		return self.applyTricks(True) or False;
 
+	def tiePlay(self):
+		for x in range(3):
+			for y in range(3):
+				if self.isEmpty(x, y):
+					return [x, y];
+
 	def doPlay(self, x = 0, y = 0):
 		
-		cords = self.checkIfICanWinInCurrentTurn() or self.checkIfEnemyCanWinNextTurn()	or self.applyTricks() or self.preventTricks() or self.basicCordsAttack();
+		cords = self.checkIfICanWinInCurrentTurn() or self.checkIfEnemyCanWinNextTurn()	or self.applyTricks() or self.preventTricks() or self.basicCordsAttack() or self.tiePlay();
 		if cords:
 			return super().doPlay(cords[0], cords[1]);
