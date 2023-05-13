@@ -1,7 +1,7 @@
 # Tic-Tac-Toe
 Inspired by my brother [@Nicholasprd](https://github.com/Nicholasprd) that made a tic-tac-toe project as college homework, I want to back to my college times and do this challenge again.
 
-My first time doing this challenge, I was used too many `if` and `else` for each possible tricks and condition for `"IA"`. In 2012 my homework was make a Tic-Tac-Toe for human vs human and human vs `"IA"`. 
+My first time doing this challenge, I was used too many `if` and `else` for each possible trick and condition for `"IA"`. In 2012 my homework was make a Tic-Tac-Toe for human vs human and human vs `"IA"`. 
 
 ## Tricks
 
@@ -13,4 +13,4 @@ Are simple win conditions.
 
 ## About this version
 
-In this version I try to remove conditions for specific positions of game and replace for methods that reads lists of positions for prevent tricks and apply tricks.
+In this version I tried to remove conditions for specific positions of game and replace for methods that reads lists of positions for prevent tricks and apply tricks.
